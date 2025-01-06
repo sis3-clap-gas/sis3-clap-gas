@@ -15,8 +15,6 @@ Debido a restricciones de presupuesto, el proyecto está usando un host gratuito
 
 ## Acceso rápido
 
-## Acceso rápido
-
 ### Probar en producción
 
 - [Lado del ciudadano](https://sis3-clap-gas.onrender.com/)
