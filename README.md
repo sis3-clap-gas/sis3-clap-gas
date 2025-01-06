@@ -34,4 +34,11 @@ Debido a restricciones de presupuesto, el proyecto está usando un host gratuito
 - **Cédula:** 30406581
 - **Contraseña:** test
 
+## Ciudadano
+[screen-capture.webm](https://github.com/user-attachments/assets/447b837e-e8e8-47d3-b147-8c4841466ea9)
+
+
+
+
+
 
