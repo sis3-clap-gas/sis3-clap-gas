@@ -11,7 +11,7 @@ Este es un sistema de gestión para la distribución de gas y clap a través de 
 - [FreeSQLDatabase](https://www.freesqldatabase.com/) - Servicio de hosting gratuito para MySQL.
 
 ### Nota importante:
-Debido a restricciones de presupuesto, el proyecto está usando un host gratuito de MySQL proporcionado por FreeSQLDatabase. Esto puede ocasionar que algunas consultas tarden en cargar. Sin embargo, estas demoras generalmente no exceden los 2 minutos. El resto de las funcionalidades del sistema funcionan perfectamente.
+Debido a restricciones de presupuesto, el proyecto está usando un host gratuito de MySQL proporcionado por FreeSQLDatabase. Esto puede ocasionar que algunas consultas tarden en cargar.
 
 ## Acceso rápido
 
