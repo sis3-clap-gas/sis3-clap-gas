@@ -1,4 +1,4 @@
-# Proyecto SIS3 CLAP Gas
+# Sistema de Gestión, Control y Seguimiento de Pagos de la Bolsa CLAP y Gas
 
 Este es un sistema de gestión para la distribución de gas y clap a través de los Comités Locales de Abastecimiento y Producción (CLAP) y GAS.
 
