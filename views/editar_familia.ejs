@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Panel de <%= rol %>
+    </title>
+    <link href="/stylesheets/all.min.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" data-purpose="Layout StyleSheet" title="Web Awesome"
+        href="/css/app-wa-4605c815f1874757bc9ac33aa114fb0f.css?vsn=d">
+
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v5.15.4/css/all.css">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+    <link href="/stylesheets/sb-admin-2.min.css" rel="stylesheet">
+
+
+    <style>
+        .separation {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .separation label {
+            margin-top: .4rem;
+            color: rgb(22, 22, 22);
+            font-weight: bold;
+        }
+
+        .separation button {
+            border: 0;
+            background-color: brown;
+            padding: .3rem 1rem;
+            color: white;
+            border-radius: 3px;
+        }
+
+        
+        .separation input, .separation select {
+            border: 1px solid brown;
+            border-radius: 3px;
+        }  
+
+        .separation input:focus {
+            border: 1px solid brown;
+            border-radius: 3px;
+            outline: 0;
+        }
+
+        
+
+
+
+    </style>
+
+</head>
+
+<body id="page-top">
+    <div id="wrapper">
+        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/admin_panel">
+                <div class="sidebar-brand-text mx-3">
+                    <%= rol %>
+                </div>
+            </a>
+            <hr class="sidebar-divider my-0">
+
+            <hr class="sidebar-divider">
+            <div class="sidebar-heading">
+                Interfaz
+            </div>
+
+
+            <!-- Nav Item - Charts -->
+            <li class="nav-item active">
+                <a class="nav-link" href="/admin_panel">
+                    <i class="fas fa-user fa-chart-area"></i>
+                    <span>Usuarios</span></a>
+            </li>
+            <!-- Nav Item - Charts -->
+            <li class="nav-item">
+                <a class="nav-link" href="/calles_panel">
+                    <i class="fas fa-road"></i>
+                    <span>Calles y Familias</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/inventario_panel">
+                    <i class="fas fa-box"></i>
+                    <span>Inventario</span></a>
+            </li>
+
+
+            <li class="nav-item">
+                <a class="nav-link" href="/pagos_panel">
+                    <i class="fas fa-credit-card"></i>
+                    <span>Pagos</span></a>
+            </li>
+            <!--
+            <li class="nav-item">
+                <a class="nav-link" href="">
+                    <i class="fas fa-envelope"></i>
+                    <span>Notificaciones</span></a>
+            </li>-->
+
+
+            <!-- Nav Item - Tables 
+            <li class="nav-item">
+                <a class="nav-link" href="tables.html">
+                    <i class="fas fa-fw fa-table"></i>
+                    <span>Tables</span></a>
+            </li>
+-->
+            <!-- Divider -->
+            <hr class="sidebar-divider d-none d-md-block">
+
+            <!-- Sidebar Toggler (Sidebar) -->
+            <div class="text-center d-none d-md-inline">
+                <button class="rounded-circle border-0" id="sidebarToggle"></button>
+            </div>
+
+        </ul>
+        <!-- End of Sidebar -->
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content">
+
+                <!-- Topbar -->
+                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+                    <!-- Sidebar Toggle (Topbar) -->
+                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                        <i class="fa fa-bars"></i>
+                    </button>
+
+                    <!-- Topbar Search -->
+
+
+                    <!-- Topbar Navbar -->
+                    <ul class="navbar-nav ml-auto">
+
+                        <!-- Nav Item - Search Dropdown (Visible Only XS) -->
+                        <li class="nav-item dropdown no-arrow d-sm-none">
+                            <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-search fa-fw"></i>
+                            </a>
+                            <!-- Dropdown - Messages -->
+                            <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
+                                aria-labelledby="searchDropdown">
+                                <form class="form-inline mr-auto w-100 navbar-search">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control bg-light border-0 small"
+                                            placeholder="Search for..." aria-label="Search"
+                                            aria-describedby="basic-addon2">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary" type="button">
+                                                <i class="fas fa-search fa-sm"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </li>
+                        <div class="topbar-divider d-none d-sm-block"></div>
+                        <li class="nav-item dropdown no-arrow">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small"></span>
+                                <img class="img-profile rounded-circle"
+                                    src="https://i.pinimg.com/736x/8b/16/7a/8b167af653c2399dd93b952a48740620.jpg">
+                            </a>
+                            <!-- Dropdown - User Information -->
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                aria-labelledby="userDropdown">
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="/logoutAdmin" data-toggle="modal"
+                                    data-target="#logoutModal">
+                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Cerrar sesión
+                                </a>
+                            </div>
+                        </li>
+
+                    </ul>
+
+                </nav>
+                
+
+                <div class="container-fluid"
+                style="display: flex; justify-content: center; align-items: center; flex-direction: column; gap: 20px;">
+                <h2 style="color: black;">Editar Familia</h2>
+                <form action="/editarfamilia/<%= familia.familia_id %>" method="POST"
+                  style="padding: 1rem; background-color: white; border-radius: 5px; display: flex; flex-direction: column; gap: 7px;">
+                  <div class="separation">
+                    <label for="personas">Jefe/a de Hogar</label>
+                    <select name="personas" id="personas" required>
+                      <% calle.forEach(user => { %>
+                        <option value="<%= user.persona_id %>" <%= user.persona_id === familia.persona_id ? 'selected' : '' %>>
+                          <%= user.nombre %> <%= user.apellido %>
+                        </option>
+                      <% }) %>
+                    </select>
+              
+                    <label for="lider">Líder de Calle</label>
+                    <select name="lider" id="lider" required>
+                      <% personas.forEach(user => { %>
+                        <option value="<%= user.lidercalle_calles_id %>" <%= user.lidercalle_calles_id === familia.lider_calle_id ? 'selected' : '' %>>
+                          <%= user.nombre %> <%= user.apellido %>
+                        </option>
+                      <% }) %>
+                    </select>
+                  </div>
+                  <div class="separation">
+                    <label for="familia">Nombre de Familia</label>
+                    <input type="text" name="familia" id="familia" value="<%= familia.nombre_familia %>" required>
+                    <label for="miembros">Cantidad de Miembros</label>
+                    <input type="text" name="miembros" id="miembros" value="<%= familia.cantidad_miembros %>" required>
+                    <button type="submit">Guardar Cambios</button>
+                  </div>
+                </form>
+              </div>
+              
+
+
+            </div>
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Copyright &copy; Gobierno Bolivariano de Guarico 2024</span>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">¿Estas seguro de cerrar sesión?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">Seleccione "Cerrar sesión" a continuación si está listo para finalizar su sesión
+                    actual.</div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                    <a class="btn btn-primary" href="/logoutAdmin">Cerrar sesión</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/javascripts/jquery.min.js"></script>
+    <script src="/javascripts/bootstrap.bundle.min.js"></script>
+    <script src="/javascripts/jquery.easing.min.js"></script>
+    <script src="/javascripts/sb-admin-2.min.js"></script>
+    <script src="/javascripts/Chart.min.js"></script>
+    <script src="/javascripts/chart-area-demo.js"></script>
+    <script src="/javascripts/chart-pie-demo.js"></script>
+
+</body>
+
+</html>

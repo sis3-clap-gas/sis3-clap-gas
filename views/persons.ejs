@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="/agregarusuarios" method="POST">
+        <label for="">Nombre</label>
+        <input type="text" name="nombre"><br>
+        <label for="">Apellido</label>
+        <input type="text" name="apellido"><br>
+        <label for="">Cédula</label>
+        <input type="text" name="cedula"><br>
+        <label for="">Contraseña</label>
+        <input type="text" name="contraseña"><br>
+        <label for="">Sector/Nº Casa</label>
+        <input type="text" name="direccion"><br>
+        <label for="">Teléfono</label>
+        <input type="text" name="telefono"><br>
+        <label for="">Fecha de nacimiento</label>
+        <input type="date" name="fechadenacimiento" id=""><br>
+        <label for="">Calle</label>
+        <select name="calle" id=""><br>
+            <% calle.forEach(user => { %>
+            <option value="<%= user.calle_id %>"><%= user.nombre_calle %></option>
+            <% }) %>
+        </select><br>
+        <label for="">Rol</label>
+        <select name="rol" id=""><br>
+            <option value="Ciudadano">Ciudadano</option>
+            <option value="Administrador">Administrador</option>
+            <option value="Líder de Calle">Líder de Calle</option>
+        </select>
+        <button>Enviar</button>
+    </form>
+</body>
+</html>

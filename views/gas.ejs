@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Comuna</title>
+  <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css" />
+  <link rel="stylesheet" href="/stylesheets/style.css" />
+  <link rel="stylesheet" href="/assets/fonts/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Poppins:wght@400;500;700&display=swap"
+    rel="stylesheet" />
+</head>
+
+<body class="color-clap">
+
+  <header id="header">
+    <nav class="container">
+      <a class="logo" href=""></a>
+      <!-- Menú -->
+      <div class="menu">
+        <ul class="grid">
+          <li><a class="title" href="/">Inicio</a></li>
+          <li><a class="title" href="/logout">Cerrar sesión</a></li>
+          </li>
+        </ul>
+      </div>
+      <!-- Toggle del menú -->
+      <div class="toggle icon-menu" id="open"></div>
+      <div class="toggle icon-close" id="close"></div>
+    </nav>
+  </header>
+  <main class="main-payment">
+    <div class="notificaciones" id="notificaciones">
+      <label for="hack" id="checkbox_hack">
+        <span class="icono-campana">
+          <svg fill="#000000" version="1.1" width="30px" heigth="30px" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 611.999 611.999" xml:space="preserve">
+            <g>
+              <g>
+                <g>
+                  <path d="M570.107,500.254c-65.037-29.371-67.511-155.441-67.559-158.622v-84.578c0-81.402-49.742-151.399-120.427-181.203
+				C381.969,34,347.883,0,306.001,0c-41.883,0-75.968,34.002-76.121,75.849c-70.682,29.804-120.425,99.801-120.425,181.203v84.578
+				c-0.046,3.181-2.522,129.251-67.561,158.622c-7.409,3.347-11.481,11.412-9.768,19.36c1.711,7.949,8.74,13.626,16.871,13.626
+				h164.88c3.38,18.594,12.172,35.892,25.619,49.903c17.86,18.608,41.479,28.856,66.502,28.856
+				c25.025,0,48.644-10.248,66.502-28.856c13.449-14.012,22.241-31.311,25.619-49.903h164.88c8.131,0,15.159-5.676,16.872-13.626
+				C581.586,511.664,577.516,503.6,570.107,500.254z M484.434,439.859c6.837,20.728,16.518,41.544,30.246,58.866H97.32
+				c13.726-17.32,23.407-38.135,30.244-58.866H484.434z M306.001,34.515c18.945,0,34.963,12.73,39.975,30.082
+				c-12.912-2.678-26.282-4.09-39.975-4.09s-27.063,1.411-39.975,4.09C271.039,47.246,287.057,34.515,306.001,34.515z
+				 M143.97,341.736v-84.685c0-89.343,72.686-162.029,162.031-162.029s162.031,72.686,162.031,162.029v84.826
+				c0.023,2.596,0.427,29.879,7.303,63.465H136.663C143.543,371.724,143.949,344.393,143.97,341.736z M306.001,577.485
+				c-26.341,0-49.33-18.992-56.709-44.246h113.416C355.329,558.493,332.344,577.485,306.001,577.485z" />
+                  <path d="M306.001,119.235c-74.25,0-134.657,60.405-134.657,134.654c0,9.531,7.727,17.258,17.258,17.258
+				c9.531,0,17.258-7.727,17.258-17.258c0-55.217,44.923-100.139,100.142-100.139c9.531,0,17.258-7.727,17.258-17.258
+				C323.259,126.96,315.532,119.235,306.001,119.235z" />
+                </g>
+              </g>
+            </g>
+          </svg>
+          <span class="contador"><%= numeroNotificaciones %></span>
+        </span>
+      </label>
+      <input type="checkbox" id="hack" />
+      <div class="nt" id="content-notification" style="width: 380px; height: 350px; overflow-y: scroll; background-color: white;   padding: 0rem; border-radius: 4px;">
+        <h4 style="font-size: 1.2rem; background-color: red; padding: .23rem; border-radius: 4px 4px 0px 0px; color: white;">Notificaciones</h4>
+        <img src="/images/xsymbol.png" alt="" class="x" id="x">
+        <br>
+        <% notificaciones.forEach(user => { %>
+          <p style="margin-bottom: .4rem; padding-left: .6rem; font-size: 1rem;"><%= user.mensaje %></p>
+          <p style="font-size:.8rem; padding-left: .6rem;"><b><%= user.fecha_creacion %></b></p><br>
+          <% }) %>
+      </div>
+    </div>
+    <section class="section" id="services">
+      
+      <div class="container payment flex">
+        <% if (lider) { %>
+        <div class="data-lider">
+          <h2 style="font-size: 1.8rem;">Líder de calle: <%= lider.nombre %> <%= lider.apellido %></h2>
+          <h3>Datos de familia</h3>
+          <p>Nombre de la familia: <b><%= familia.nombre_familia%></b></p>
+          <p>Dirección <b><br><%= calle.nombre_calle %> <br> <%= calle.direccion %></b></p>
+          <p>Miembros del nucleo familiar: <%= familia.cantidad_miembros %></p>
+          <p>Bombonas a pagar: <%= bolsasaPagar %></p>
+          <h3>Datos bancarios a pagar</h3>
+          <div class="data-payment">
+            <p>Pago Movil</p>
+            <p>Banco: 0102</p>
+            <p>Cédula: V-13.341.582</p>
+            <p>Número de Teléfono: 0412-385231</p>
+            <p>Monto a pagar: <b><%= costo %> Bolívares</b></p>
+          </div>
+        </div>
+        <div class="client-payment">
+          <form action="/upload/2" method="POST" enctype="multipart/form-data" class="form-payment">
+            <h2>Datos del pago</h2>
+            <br>
+            <div class="form-payment-content">
+              <div class="input-effect">
+                <input type="number" name="reference" min="0" required>
+                <label for="">Número de referencia</label>
+              </div>
+              <label for="">Adjuntar comprobante</label>
+              <canvas id="canvas" style="display: none;"></canvas>
+              <input type="file" id="uploader" name="file" accept="image/*" required style="
+                  padding-left: 0px;
+                  padding-top: 0px;
+                  border-radius: 0;">
+              <img class="svg" src="/images/upload.svg" alt="">
+            </div>
+            <input type="hidden" name="liderdecalle_id" value="<%= lider.id %>">
+            <input type="hidden" name="cantidad" value="<%= bolsasaPagar %>">
+            <input type="hidden" name="precio_total" value="<%= costo %>">
+
+            <button type="submit">Enviar</button>
+          </form>
+        </div>
+        <% } else { %>
+          <h2>Aún no tienes asignado un líder de calle</h2>
+        <% } %>
+        
+      </div>
+    </section>
+    <!-- Contacto 
+    <section class="section" id="contact">
+      <div class="container grid">
+        <div class="text">
+          <h2 class="title">Contáctanos</h2>
+          <p>Si tienes preguntas o deseas agendar una cita, ¡estamos aquí para ti!</p>
+           <a href="https://api.whatsapp.com/send?phone=584243317845&text=Hola!%20Quisiera%20agendar%20una%20cita." class="button" target="_blank"><i class="icon-whatsapp"></i>Escríbenos por WhatsApp</a>
+        </div>
+        <div class="links">
+          <form action="/save" method="POST">
+            <label for="correo">Correo</label>
+            <input type="email" name="email" required>
+            <label for="nombre">Nombre</label>
+            <input type="text" name="name" required>
+            <label for="comentario">Comentario</label>
+            <textarea id="comentario" name="commentary" rows="10" cols="50" required></textarea>
+            <button>Enviar</button>
+          </form>
+        </div>
+      </div>
+    </section>
+  -->
+    <div class="divider-1"></div>
+  </main>
+  <!-- Footer 
+  <footer class="section">
+    <div class="container grid">
+      <div class="brand">
+        <a class="logo logo-alt" href="#home">Estilo<span>Galáctico</span>.</a>
+        <p>©2024 Gobierno Bolivariano de Guarico.</p>
+        <p>Todos los derechos reservados.</p>
+      </div>
+      <div class="social">
+        <a href="https://instagram.com" target="_blank"><i class="icon-instagram"></i></a>
+        <a href="https://facebook.com" target="_blank"><i class="icon-facebook"></i></a>
+        <a href="https://youtube.com" target="_blank"><i class="icon-youtube"></i></a>
+      </div>
+    </div>
+  </footer>-->
+  <a href="#home" class="back-to-top"><i class="icon-arrow-up"></i></a>
+  <script src="https://unpkg.com/scrollreveal"></script>
+  <script src="https://unpkg.com/swiper@7/swiper-bundle.min.js"></script>
+  <script src="/javascripts/main.js"></script>
+  <script>
+    const canvas = document.querySelector("#canvas");
+    const ctx = canvas.getContext('2d');
+    const uploader = document.querySelector("#uploader");
+    uploader.addEventListener("change", () => {
+      const myFile = uploader.files[0];
+      const img = new Image();
+      canvas.style.display = "block";
+      img.src = URL.createObjectURL(myFile);
+      img.onload = () => {
+        console.log(img.width);
+        canvas.width = img.width;
+        canvas.height = img.height;
+        ctx.drawImage(img, 0, 0)
+      }
+    })
+  </script>
+</body>
+
+</html>
