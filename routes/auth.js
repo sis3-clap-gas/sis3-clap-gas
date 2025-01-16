@@ -48,9 +48,7 @@ exports.protectRouteAdminLogout = async (req, res, next) => {
     next();
 }
 
-
-
-
+        
 exports.protectRouteLogOut = async (req, res, next) => {
     if (req.cookies.jwt_user) {
         try {
@@ -70,14 +68,14 @@ exports.login = async (req, res) => {
     connection.query("SELECT * FROM usuarios WHERE cédula = ?", [cedula], (err, rows) => {
         if (err) {
             console.error("Error de base de datos:", err);
-            return res.status(500).json({ query: 'Error interno del servidor' });
+            return res.status(500).json({ message: 'Error interno del servidor' });
         }
         if (rows.length > 0) {
             const user = rows[0];
             bcrypt.compare(contrasena, user.contraseña, (err, isMatch) => {
                 if (err) {
                     console.error("Error comparando el hash con la contrasena:", err);
-                    return res.status(500).json({ query: 'Error interno del servidor' });
+                    return res.status(500).json({ message: 'Error interno del servidor' });
                 }
                 if (isMatch) {
                     console.log(user.persona_id)
@@ -86,13 +84,13 @@ exports.login = async (req, res) => {
                         { expiresIn: '1h' }
                     );
                     res.cookie('jwt_user', token);
-                    res.redirect('/');
+                    return res.status(200).json({ message: 'Inicio de sesión exitoso' });
                 } else {
-                    return res.status(401).json({ query: 'Cédula o contraseña incorrectas.' });
+                    return res.status(401).json({ message: 'Cédula o contraseña incorrectas.' });
                 }
             });
         } else {
-            return res.status(404).json({ query: 'Cédula o contraseña incorrectas.' });
+            return res.status(401).json({ message: 'Cédula o contraseña incorrectas.' });
         }
     });
 }
@@ -103,7 +101,7 @@ exports.loginadmin = async (req, res) => {
     connection.query("SELECT * FROM usuarios WHERE cédula = ?", [cedula], (err, rows) => {
         if (err) {
             console.error("Error de base de datos:", err);
-            return res.status(500).json({ query: 'Error interno del servidor' });
+            return res.status(500).json({ message: 'Error interno del servidor' });
         }
         if (rows.length > 0) {
             const user = rows[0];
@@ -111,7 +109,7 @@ exports.loginadmin = async (req, res) => {
                 bcrypt.compare(contrasena, user.contraseña, (err, isMatch) => {
                     if (err) {
                         console.error("Error comparando el hash con la contrasena:", err);
-                        return res.status(500).json({ query: 'Error interno del servidor' });
+                        return res.status(500).json({ message: 'Error interno del servidor' });
                     }
                     if (isMatch) {
                         const token = jwt.sign(
@@ -119,17 +117,17 @@ exports.loginadmin = async (req, res) => {
                             { expiresIn: '1h' }
                         );
                         res.cookie('jwt_admin', token);
-                        res.redirect('/admin_panel');
+                        return res.status(200).json({ message: 'Inicio de sesión exitoso' });
                     } else {
-                        return res.status(401).json({ query: 'Cédula o contraseña incorrectas.' });
+                        return res.status(401).json({ message: 'Cédula o contraseña incorrectas.' });
                     }
                 });
             }
             else{
-                return res.status(401).json({ query: 'Acceso no autorizado.' });
+                return res.status(401).json({ message: 'Acceso no autorizado.' });
             }
         } else {
-            return res.status(404).json({ query: 'Cédula o contraseña incorrectas.' });
+            return res.status(401).json({ message: 'Cédula o contraseña incorrectas.' });
         }
     });
 }
