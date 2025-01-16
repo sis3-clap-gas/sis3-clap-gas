@@ -22,6 +22,8 @@
 
     <!-- Custom styles for this template-->
     <link href="/stylesheets/sb-admin-2.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 
 </head>
 
@@ -198,7 +200,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <% usuario.forEach(user=> { %>
+                                        <% usuario.forEach(user => { %>
                                             <tr>
                                                 <td>
                                                     <%= user.pago_id %>
@@ -261,8 +263,8 @@
                             <% if (user.estado !== 'Aprobado' && user.estado !== 'Rechazado') { %>
                                 <div class="modal-footer">
                                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
-                                    <a class="btn btn-success" href="/aprobar/<%= user.pago_id %>">Aprobar</a>
-                                    <a class="btn btn-danger" href="/rechazar/<%= user.pago_id %>">Rechazar</a>
+                                    <a id="aprobar" class="btn btn-success" href="/aprobar/<%= user.pago_id %>">Aprobar</a>
+                                    <a id="rechazar" class="btn btn-danger" href="/rechazar/<%= user.pago_id %>">Rechazar</a>
                                 </div>
                             <% } %>
 
@@ -320,7 +322,65 @@
     <script src="/javascripts/Chart.min.js"></script>
     <script src="/javascripts/chart-area-demo.js"></script>
     <script src="/javascripts/chart-pie-demo.js"></script>
-
+    <script>
+        const aprobarBtns = document.querySelectorAll('.btn-success');
+        const rechazarBtns = document.querySelectorAll('.btn-danger');
+        aprobarBtns.forEach((btn) => {
+            btn.addEventListener('click', async (e) => {
+                e.preventDefault();
+                const pagoId = btn.getAttribute('href').split('/').pop();
+    
+                const response = await fetch(`/aprobar/${pagoId}`);
+                const result = await response.json();
+    
+                if (response.status === 200) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: result.message,
+                        showConfirmButton: false,
+                        timer: 1500
+                    }).then(() => {
+                        window.location.reload(); // Refresca la página después de la aprobación
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error al aprobar el pago',
+                        showConfirmButton: true
+                    });
+                }
+            });
+        });
+    
+        rechazarBtns.forEach((btn) => {
+            btn.addEventListener('click', async (e) => {
+                e.preventDefault();
+                const pagoId = btn.getAttribute('href').split('/').pop();
+    
+                const response = await fetch(`/rechazar/${pagoId}`);
+                const result = await response.json();
+    
+                if (response.status === 200) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: result.message,
+                        showConfirmButton: false,
+                        timer: 1500
+                    }).then(() => {
+                        window.location.reload(); 
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error al rechazar el pago',
+                        showConfirmButton: true
+                    });
+                }
+            });
+        });
+    </script>
+    
+    
 </body>
 
 </html>

@@ -7,9 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-
     <title>Login Administrativo</title>
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         body {
             display: flex !important;
@@ -47,12 +46,12 @@
                                     <div class="text-center">
                                         <h1 class="h4 text-gray-900 mb-4">¡Bienvenido!</h1>
                                     </div>
-                                    <form class="user" action="/login_admin" method="POST">
+                                    <form class="user" action="/login_admin" method="POST" id="loginForm">
                                         <div class="form-group">
-                                            <input type="text" class="form-control form-control-user" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Cédula de Identidad" name="cedula">
+                                            <input type="text" class="form-control form-control-user" id="cedula"  aria-describedby="emailHelp" placeholder="Cédula de Identidad" name="cedula">
                                         </div>
                                         <div class="form-group">
-                                            <input type="password" class="form-control form-control-user" id="exampleInputPassword" placeholder="Contraseña" name="contrasena">
+                                            <input type="password" class="form-control form-control-user" id="contrasena"  placeholder="Contraseña" name="contrasena">
                                         </div>
                                         <button class="btn btn-primary btn-user btn-block">
                                             Iniciar sesión
@@ -72,7 +71,54 @@
 
     </div>
 
-
+<script>
+        const form = document.getElementById('loginForm');
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const cedula = document.getElementById('cedula').value;
+            const contrasena = document.getElementById('contrasena').value;
+            const response = await fetch('/login_admin', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ cedula, contrasena })
+            });
+    
+            const result = await response.json();
+            if (response.status === 200) {
+            Swal.fire({
+                icon: 'success',
+                title: result.message,
+                showConfirmButton: false,
+                timer: 1500,
+                customClass: {
+                    title: 'swal-title-normal'
+                }
+            }).then(() => {
+                window.location.href = '/admin_panel';
+            });
+            } else if (response.status === 401) {
+                Swal.fire({
+                    icon: 'error',
+                    title: result.message,
+                    showConfirmButton: true,
+                    customClass: {
+                        title: 'swal-title-normal'
+                    }
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error interno del servidor',
+                    showConfirmButton: true,
+                    customClass: {
+                        title: 'swal-title-normal'
+                    }
+                });
+            }
+        });
+    </script>
 
 
 </body></html>

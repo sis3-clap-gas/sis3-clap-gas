@@ -95,7 +95,7 @@
           </div>
         </div>
         <div class="client-payment">
-          <form action="/upload/2" method="POST" enctype="multipart/form-data" class="form-payment">
+          <form id="uploadForm" action="/upload/2" method="POST" enctype="multipart/form-data" class="form-payment">
             <h2>Datos del pago</h2>
             <br>
             <div class="form-payment-content">
@@ -183,6 +183,54 @@
         ctx.drawImage(img, 0, 0)
       }
     })
+  </script>
+  <script>
+    document.getElementById('uploadForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+  
+      const formData = new FormData(this);
+  
+      // Muestra alerta de espera
+      Swal.fire({
+        title: 'Enviando pago...',
+        text: 'Por favor espera mientras se procesa el comprobante.',
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();  // Mostrar animación de carga
+        }
+      });
+  
+      try {
+        const response = await fetch(this.action, {
+          method: 'POST',
+          body: formData,
+        });
+  
+        const result = await response.json();
+  
+        if (response.ok) {
+          Swal.fire({
+            icon: 'success',
+            title: 'Éxito',
+            text: result.message,
+          }).then(() => {
+            window.location.href = '/';  // Redirige después de mostrar la alerta de éxito
+          });
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: result.message,
+          });
+        }
+      } catch (error) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Ocurrió un error inesperado',
+        });
+      }
+    });
   </script>
 </body>
 
