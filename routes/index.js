@@ -559,7 +559,7 @@ router.get('/rechazar/:id', (req, res) => {
   const rechazado = 'Rechazado';
   const query = "UPDATE entregas SET estado = ? WHERE entrega_id = ?";
   connection.query(query, [rechazado, id], (err, row) => {
-    return res.status(200).json({ message: 'Pago aprobado' });
+    return res.status(200).json({ message: 'Pago rechazado' });
   })
 })
 
