@@ -124,12 +124,9 @@ router.post('/familias', (req, res) => {
 
 router.get('/familiaporcalle/edit/:id', auth.protectRouteAdmin, (req, res) => {
   const { id } = req.params;
-
   console.log(id)
-
   const queryFamilia = `
-    SELECT f.*, p1.nombre AS jefe_nombre, p1.apellido AS jefe_apellido, p3.nombre AS lider_nombre, p3.apellido AS lider_apellido FROM familias f INNER JOIN personas p1 ON f.persona_id = p1.persona_id INNER JOIN lidercalle_calles lc ON f.liderdecalle_id = lc.id INNER JOIN usuarios p2 ON lc.usuario_id = p2.usuario_id INNER JOIN personas p3 ON p3.persona_id = p2.persona_id WHERE f.familia_id = 20;
-  `;
+    SELECT f.*, p1.nombre AS jefe_nombre, p1.apellido AS jefe_apellido, p3.nombre AS lider_nombre, p3.apellido AS lider_apellido FROM familias f INNER JOIN personas p1 ON f.persona_id = p1.persona_id INNER JOIN lidercalle_calles lc ON f.liderdecalle_id = lc.id INNER JOIN usuarios p2 ON lc.usuario_id = p2.usuario_id INNER JOIN personas p3 ON p3.persona_id = p2.persona_id WHERE f.familia_id = ?`;
   const queryCalle = "SELECT persona_id, nombre, apellido FROM personas";
   const queryLider = `
     SELECT lc.id AS lidercalle_calles_id, p.nombre, p.apellido 
@@ -161,6 +158,7 @@ router.get('/familiaporcalle/edit/:id', auth.protectRouteAdmin, (req, res) => {
     });
   });
 });
+
 
 
 router.post('/editarfamilia/:id', auth.protectRouteAdmin, (req, res) => {
@@ -264,25 +262,25 @@ router.get('/clap/:id', auth.protectRoute, (req, res) => {
   connection.query(query, [persona_id, id], (err, row) => {
     if (err) {
       console.error('Error en la consulta:', err);
-      return res.status(500).send('Error en el servidor');
+      return res.status(404).json({ message: "Error en el servidor." });   
     }
     if (!row || row.length === 0) {
-      return res.status(404).send('Familia no encontrada');
+      return res.status(404).json({ message: "Familia no encontrada" });   
     }
     const familia = row[0]; 
     if (!familia.liderdecalle_id) {
-      return res.status(404).send('Líder de calle no encontrado');
-    }
+      return res.status(404).json({ message: "Líder de Calle no encontrado" });   
+     }
     connection.query(query3, [familia.liderdecalle_id], (err, rowQuery) => {
       if (err) {
         console.error('Error en la consulta del líder:', err);
-        return res.status(500).send('Error en el servidor');
-      }
+        return res.status(404).json({ message: "Error en el servidor" });   
+        }
       const lider = rowQuery[0] || null;
       connection.query(query4, [persona_id], (err, rowCalle) => {
         if (err) {
           console.error('Error en la consulta de la calle:', err);
-          return res.status(500).send('Error en el servidor');
+          return res.status(404).json({ message: "Error en el servidor" });   
         }
 
         const calle = rowCalle[0] || null;
@@ -317,9 +315,20 @@ router.get('/gas/:id', auth.protectRoute, (req, res) => {
   const query3 = "SELECT ldc.id, p.nombre, p.apellido, c.nombre_calle, p.direccion FROM lidercalle_calles ldc INNER JOIN usuarios u ON ldc.usuario_id = u.usuario_id INNER JOIN personas p ON u.persona_id = p.persona_id INNER JOIN calles c ON p.calle_id = c.calle_id WHERE ldc.id = ?;";
   const query4 = "SELECT c.nombre_calle, p.direccion FROM personas p INNER JOIN calles c ON c.calle_id = p.calle_id WHERE p.persona_id = ?";
   connection.query(query, [persona_id, id], (err, row) => {
+    if (err) {
+      console.error('Error en la consulta:', err);
+      return res.status(404).json({ message: "Error en el servidor." });   
+    }
+    if (!row || row.length === 0) {
+      return res.status(404).json({ message: "Familia no encontrada" });   
+    }
+
     connection.query(query3, row[0].liderdecalle_id, (err, rowQuery) => {
       connection.query(query4, persona_id, (err, rowCalle) => {
         let familia = row[0]
+        if (!familia.liderdecalle_id) {
+          return res.status(404).json({ message: "Líder de Calle no encontrado" });   
+         }
         const lider = rowQuery[0];
         const calle = rowCalle[0]
         const bolsaaPagar = Math.round(familia.cantidad_miembros / 3);
@@ -480,7 +489,6 @@ INNER JOIN personas p2 ON u.persona_id = p2.persona_id
 INNER JOIN pagos p ON e.entrega_id = p.entrega_id;
 
   `
-
   connection.query(query, (err, row) => {
     console.log('Pagos: ',row);
 
