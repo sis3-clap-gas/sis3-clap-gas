@@ -8,7 +8,7 @@ Este es un sistema de gestión para la distribución de gas y clap a través de 
 - [MySQL](https://www.mysql.com/) - Base de datos relacional.
 - [Cloudinary](https://cloudinary.com/) - Almacenamiento y gestión de imágenes.
 - [Render](https://render.com/) - Plataforma para el despliegue del proyecto.
-- [FreeSQLDatabase](https://www.freesqldatabase.com/) - Servicio de hosting gratuito para MySQL.
+- [Clever Cloud](clever-cloud.com/product/mysql/) - Servicio de hosting gratuito para MySQL.
 
 ### Nota importante:
 Debido a restricciones de presupuesto, el proyecto está usando un host gratuito de MySQL proporcionado por FreeSQLDatabase. Esto puede ocasionar que algunas consultas tarden en cargar.
