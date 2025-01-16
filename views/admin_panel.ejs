@@ -174,26 +174,26 @@
                                             <th>Apellido</th>
                                             <th>Teléfono</th>
                                             <th>Cédula</th>
-                                            <th>Rol</th>
-                                            <% if (rol !== 'Líder de Calle') { %>
-                                                <th>Acciones</th>
-                                            <% } %>
+                                            <th>Rol</th>        
+                                             <th>Acciones</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                     <% usuario.forEach(user => { %>
                                         <tr>
+                                            
                                             <td><%= user.id %></td>
                                             <td><%= user.nombre %></td>
                                             <td><%= user.apellido %></td>
                                             <td><%= user.telefono %></td>
                                             <td><%= user.cedula %></td>
                                             <td><%= user.rol %></td>
-                                            <% if (rol !== 'Líder de Calle') { %>
+                                            
                                                 <td><a class="btn btn-info" href="/editarusuario/<%= user.id %>">
                                                     <li class="fas fa-pencil">
                                                     </li>
-                                                </a>          
+                                                </a>        
+                                            <% if (rol !== 'Líder de Calle') { %>  
                                                 <a class="btn btn-danger" href="/usuarios/delete/<%= user.id %>">
                                                     <li class="fas fa-trash">
 

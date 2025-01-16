@@ -10,6 +10,8 @@
   <link rel="stylesheet" href="/assets/fonts/style.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  
   <link
     href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Poppins:wght@400;500;700&display=swap"
     rel="stylesheet" />
@@ -61,17 +63,26 @@
               </g>
             </g>
           </svg>
-          <span class="contador"><%= numeroNotificaciones %></span>
+          <span class="contador">
+            <%= numeroNotificaciones %>
+          </span>
         </span>
       </label>
       <input type="checkbox" id="hack" />
-      <div class="nt" id="content-notification" style="width: 380px; height: 350px; overflow-y: scroll; background-color: white;   padding: 0rem; border-radius: 4px;">
-        <h4 style="font-size: 1.2rem; background-color: red; padding: .23rem; border-radius: 4px 4px 0px 0px; color: white;">Notificaciones</h4>
+      <div class="nt" id="content-notification"
+        style="width: 380px; height: 350px; overflow-y: scroll; background-color: white;   padding: 0rem; border-radius: 4px;">
+        <h4
+          style="font-size: 1.2rem; background-color: red; padding: .23rem; border-radius: 4px 4px 0px 0px; color: white;">
+          Notificaciones</h4>
         <img src="/images/xsymbol.png" alt="" class="x" id="x">
         <br>
-        <% notificaciones.forEach(user => { %>
-          <p style="margin-bottom: .4rem; padding-left: .6rem;"><%= user.mensaje %></p>
-          <p style="font-size:.8rem; padding-left: .6rem;"><b><%= user.fecha_creacion %></b></p><br>
+        <% notificaciones.forEach(user=> { %>
+          <p style="margin-bottom: .4rem; padding-left: .6rem;">
+            <%= user.mensaje %>
+          </p>
+          <p style="font-size:.8rem; padding-left: .6rem;"><b>
+              <%= user.fecha_creacion %>
+            </b></p><br>
           <% }) %>
       </div>
     </div>
@@ -81,13 +92,13 @@
           <h2 class="title">Seleccione su servicio a pagar</h2>
         </header>
         <div class="cards grid">
-          <a href="/clap/1" class="clap">
+          <a href="/clap/1" class="clap" id="clapLink">
             <div class="card">
-              <img src="/images/clap.png" alt="clap">
+              <img src="/images/clap.png" alt="clap" id="clap">
               <h3 class="title">CLAP</h3>
             </div>
           </a>
-          <a href="/gas/2" class="gas">
+          <a href="/gas/2" class="gas" id="gasLink">
             <div class="card">
               <img src="/images/gas.png" alt="gas">
               <h3 class="title">GAS</h3>
@@ -136,9 +147,75 @@
     </div>
   </footer>
   <a href="#home" class="back-to-top"><i class="icon-arrow-up"></i></a>
+  
   <script src="https://unpkg.com/scrollreveal"></script>
   <script src="https://unpkg.com/swiper@7/swiper-bundle.min.js"></script>
   <script src="/javascripts/main.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+  const clapLink = document.getElementById('clapLink');
+  const gasLink = document.getElementById('gasLink');
+  clapLink.addEventListener('click', async (event) => {
+    event.preventDefault();
+    const url = clapLink.getAttribute('href');
+
+    try {
+      const response = await fetch(url);
+      if (!response.ok) {
+        const error = await response.json();
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: error.message,
+        });
+        return;
+      }
+      else{
+        window.location = url
+      }
+    } catch (err) {
+      console.error('Error al realizar la solicitud:', err);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error inesperado',
+        text: 'Ocurrió un error al conectarse con el servidor. Por favor, intente nuevamente.',
+      });
+    }
+    
+  });
+
+  gasLink.addEventListener('click', async (event) => {
+    event.preventDefault();
+    const url = gasLink.getAttribute('href');
+    try {
+      const response = await fetch(url);
+      if (!response.ok) {
+        const error = await response.json();
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: error.message, // Mostrar el mensaje del servidor
+        });
+        return;
+      }
+      else{
+        window.location = url
+      }
+    } catch (err) {
+      console.error('Error al realizar la solicitud:', err);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error inesperado',
+        text: 'Ocurrió un error al conectarse con el servidor. Por favor, intente nuevamente.',
+      });
+    }
+    
+  });
+});
+
+  </script>
+
 </body>
 
 </html>
