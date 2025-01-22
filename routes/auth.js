@@ -39,7 +39,7 @@ exports.protectRouteAdminLogout = async (req, res, next) => {
         try {
             const tokenAuthorized = await promisify(jwt.verify)(req.cookies.jwt_admin, 'admin');
             if (tokenAuthorized) {
-                return res.redirect('/admin_panel');
+                return res.redirect('/estadisticas');
             }
         } catch (error) {
             console.log(error);
@@ -142,5 +142,5 @@ exports.logout = async (req, res) => {
 
 exports.logoutAdmin = async (req, res) => {
     res.clearCookie("jwt_admin");
-    res.redirect("/admin_panel");
+    res.redirect("/estadisticas");
 }

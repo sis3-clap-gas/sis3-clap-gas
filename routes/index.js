@@ -69,44 +69,44 @@ router.get('/agregarfamilias', auth.protectRouteAdmin, (req, res) => {
 });
 
 
-router.get('/agregarcalles', auth.protectRouteAdmin, (req,res) => {
-  res.render('agregar_calles',{
+router.get('/agregarcalles', auth.protectRouteAdmin, (req, res) => {
+  res.render('agregar_calles', {
     rol: req.user.rol
   })
 })
 
 
-router.get('/calles/edit/:id', auth.protectRouteAdmin, (req,res) => {
+router.get('/calles/edit/:id', auth.protectRouteAdmin, (req, res) => {
   const { id } = req.params;
   const query = "SELECT * FROM calles WHERE calle_id = ?"
-  connection.query(query,id,(err,row) => {
-    if(err){
+  connection.query(query, id, (err, row) => {
+    if (err) {
       console.log(err)
-    }else{
+    } else {
       const calle = row[0]
-      res.render('editar_calles',{
+      res.render('editar_calles', {
         rol: req.user.rol,
-        calle:calle
+        calle: calle
       })
     }
   })
 })
 
-router.post('/agregarcalles/:id', auth.protectRouteAdmin,(req,res) => {
+router.post('/agregarcalles/:id', auth.protectRouteAdmin, (req, res) => {
   const { id } = req.params;
   const { calle } = req.body;
   const query = "UPDATE calles SET nombre_calle = ? WHERE calle_id = ?";
-  connection.query(query,[calle,id],(err,row) => {
+  connection.query(query, [calle, id], (err, row) => {
     err ? console.log(err) : res.redirect('/calles_panel')
   })
 
 })
 
 
-router.post('/agregarcalles', auth.protectRouteAdmin, (req,res) => {
+router.post('/agregarcalles', auth.protectRouteAdmin, (req, res) => {
   const { calle } = req.body;
   const query = "INSERT INTO calles(nombre_calle) VALUES(?)";
-  connection.query(query,calle,(err, row) => {
+  connection.query(query, calle, (err, row) => {
     err ? console.log(err) : res.redirect('/calles_panel')
   })
 })
@@ -145,9 +145,9 @@ router.get('/familiaporcalle/edit/:id', auth.protectRouteAdmin, (req, res) => {
     const familia = rows[0];
     console.log('Familia: ', familia)
     connection.query(queryCalle, (err, calle) => {
-      if(err) console.log(err);
+      if (err) console.log(err);
       connection.query(queryLider, (err, personas) => {
-        if(err) console.log(err);
+        if (err) console.log(err);
         res.render('editar_familia', {
           rol: req.user.rol,
           familia,
@@ -195,7 +195,6 @@ router.post('/agregarusuarios', async (req, res) => {
   const { nombre, apellido, cedula, contraseña, direccion, calle, telefono, fechadenacimiento, rol } = req.body;
   const hashedPassword = await bcrypt.hash(contraseña, saltRounds);
   const checkCedulaQuery = "SELECT * FROM usuarios WHERE cédula = ?";
-
   connection.query(checkCedulaQuery, [cedula], async (err, results) => {
     if (err) {
       console.error('Error al verificar la cédula:', err);
@@ -205,24 +204,20 @@ router.post('/agregarusuarios', async (req, res) => {
     if (results.length > 0) {
       return res.status(400).send('Error: La cédula ya está registrada');
     }
-
     const query2 = "INSERT INTO personas(nombre,apellido,telefono,direccion,calle_id) VALUES(?,?,?,?,?)";
     const query1 = "INSERT INTO usuarios(persona_id,rol,cédula,contraseña,fecha_nacimiento) VALUES(?,?,?,?,?)";
     const query3 = "INSERT INTO lidercalle_calles(usuario_id,calle_id) VALUES(?,?)";
     const casa = direccion;
-
     connection.query(query2, [nombre, apellido, telefono, casa, calle], async (err, row) => {
       if (err) {
         console.error('Error al insertar persona:', err);
         return res.status(500).send('Error al agregar usuario');
       }
-
       connection.query(query1, [row.insertId, rol, cedula, hashedPassword, fechadenacimiento], async (err, rowLider) => {
         if (err) {
           console.error('Error al insertar usuario:', err);
           return res.status(500).send('Error al agregar usuario');
         }
-
         if (rol == 'Líder de Calle') {
           connection.query(query3, [rowLider.insertId, calle], (err, rowCalle) => {
             if (err) {
@@ -262,25 +257,25 @@ router.get('/clap/:id', auth.protectRoute, (req, res) => {
   connection.query(query, [persona_id, id], (err, row) => {
     if (err) {
       console.error('Error en la consulta:', err);
-      return res.status(404).json({ message: "Error en el servidor." });   
+      return res.status(404).json({ message: "Error en el servidor." });
     }
     if (!row || row.length === 0) {
-      return res.status(404).json({ message: "Familia no encontrada" });   
+      return res.status(404).json({ message: "Familia no encontrada" });
     }
-    const familia = row[0]; 
+    const familia = row[0];
     if (!familia.liderdecalle_id) {
-      return res.status(404).json({ message: "Líder de Calle no encontrado" });   
-     }
+      return res.status(404).json({ message: "Líder de Calle no encontrado" });
+    }
     connection.query(query3, [familia.liderdecalle_id], (err, rowQuery) => {
       if (err) {
         console.error('Error en la consulta del líder:', err);
-        return res.status(404).json({ message: "Error en el servidor" });   
-        }
+        return res.status(404).json({ message: "Error en el servidor" });
+      }
       const lider = rowQuery[0] || null;
       connection.query(query4, [persona_id], (err, rowCalle) => {
         if (err) {
           console.error('Error en la consulta de la calle:', err);
-          return res.status(404).json({ message: "Error en el servidor" });   
+          return res.status(404).json({ message: "Error en el servidor" });
         }
 
         const calle = rowCalle[0] || null;
@@ -317,18 +312,18 @@ router.get('/gas/:id', auth.protectRoute, (req, res) => {
   connection.query(query, [persona_id, id], (err, row) => {
     if (err) {
       console.error('Error en la consulta:', err);
-      return res.status(404).json({ message: "Error en el servidor." });   
+      return res.status(404).json({ message: "Error en el servidor." });
     }
     if (!row || row.length === 0) {
-      return res.status(404).json({ message: "Familia no encontrada" });   
+      return res.status(404).json({ message: "Familia no encontrada" });
     }
 
     connection.query(query3, row[0].liderdecalle_id, (err, rowQuery) => {
       connection.query(query4, persona_id, (err, rowCalle) => {
         let familia = row[0]
         if (!familia.liderdecalle_id) {
-          return res.status(404).json({ message: "Líder de Calle no encontrado" });   
-         }
+          return res.status(404).json({ message: "Líder de Calle no encontrado" });
+        }
         const lider = rowQuery[0];
         const calle = rowCalle[0]
         const bolsaaPagar = Math.round(familia.cantidad_miembros / 3);
@@ -428,8 +423,48 @@ router.get('/admin_panel', auth.protectRouteAdmin, (req, res) => {
   });
 });
 
-  router.get('/calles_panel', auth.protectRouteAdmin, (req, res) => {
-    const query = `SELECT f.familia_id as id, 
+
+router.get('/estadisticas', auth.protectRouteAdmin, (req, res) => {
+  const query = `SELECT u.rol, COUNT(*) AS cantidad
+                 FROM usuarios u
+                 GROUP BY u.rol`;
+
+  const queryPayment = `
+                 SELECT 
+                   SUM(CASE WHEN e.estado = 'Pendiente' THEN 1 ELSE 0 END) AS pendientes,
+                   SUM(CASE WHEN e.estado = 'Aprobado' THEN 1 ELSE 0 END) AS aprobados,
+                   SUM(CASE WHEN e.estado = 'Rechazado' THEN 1 ELSE 0 END) AS rechazados,
+                   (SELECT COUNT(*) FROM usuarios u LEFT JOIN entregas e ON u.persona_id = e.persona_id WHERE e.entrega_id IS NULL) AS sin_pagar
+                 FROM 
+                   entregas e
+               `;
+
+
+  const queryInventario = `SELECT tipo, cantidad_disponible FROM inventario`;
+  const rol = req.user.rol;
+  connection.query(query, (err, rows) => {
+    if (err) {
+      return res.status(500).send('Error al realizar la consulta');
+    }
+    connection.query(queryInventario,(err,rowInventario) =>  {
+      connection.query(queryPayment,(err,rowPayment) => {
+        res.render('estadisticas', {
+          rol,
+          usuariosPorRol: rows,
+          pagosPorEstado: rowPayment[0],
+          inventario: rowInventario
+        });
+      })
+    })
+  });
+});
+
+
+
+
+
+router.get('/calles_panel', auth.protectRouteAdmin, (req, res) => {
+  const query = `SELECT f.familia_id as id, 
     p.nombre, 
     p.apellido, 
     p.direccion, 
@@ -437,18 +472,18 @@ router.get('/admin_panel', auth.protectRouteAdmin, (req, res) => {
     f.nombre_familia, 
     f.cantidad_miembros FROM personas p 
     INNER JOIN calles c ON c.calle_id = p.calle_id INNER JOIN familias f ON f.persona_id = p.persona_id;`;
-    const query1 = "SELECT * FROM calles"
-    connection.query(query, (err, row) => {
-      connection.query(query1, (err, rowCalle) => {
-        res.render('calles_panel', {
-          rol: req.user.rol,
-          persona_id: req.user.persona_id,
-          usuario: row,
-          calles: rowCalle
-        })
+  const query1 = "SELECT * FROM calles"
+  connection.query(query, (err, row) => {
+    connection.query(query1, (err, rowCalle) => {
+      res.render('calles_panel', {
+        rol: req.user.rol,
+        persona_id: req.user.persona_id,
+        usuario: row,
+        calles: rowCalle
       })
     })
   })
+})
 
 
 router.get('/inventario_panel', auth.protectRouteAdmin, (req, res) => {
@@ -487,10 +522,9 @@ INNER JOIN calles c ON lc.calle_id = c.calle_id
 INNER JOIN usuarios u ON lc.usuario_id = u.usuario_id 
 INNER JOIN personas p2 ON u.persona_id = p2.persona_id  
 INNER JOIN pagos p ON e.entrega_id = p.entrega_id;
-
   `
   connection.query(query, (err, row) => {
-    console.log('Pagos: ',row);
+    console.log('Pagos: ', row);
 
     res.render('pagos_panel', {
       rol: req.user.rol,
@@ -559,7 +593,7 @@ router.get('/rechazar/:id', (req, res) => {
   const rechazado = 'Rechazado';
   const query = "UPDATE entregas SET estado = ? WHERE entrega_id = ?";
   connection.query(query, [rechazado, id], (err, row) => {
-    return res.status(200).json({ message: 'Pago rechazado' });
+    return res.status(200).json({ message: 'Pago aprobado' });
   })
 })
 
