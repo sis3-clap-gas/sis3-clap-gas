@@ -8,29 +8,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>Panel de <%= rol %></title>
-    <link href="/stylesheets/all.min.css" rel="stylesheet" type="text/css"> 
-    <link
-      rel="stylesheet"
-      data-purpose="Layout StyleSheet"
-      title="Web Awesome"
-      href="/css/app-wa-4605c815f1874757bc9ac33aa114fb0f.css?vsn=d"
-    >
+    <title>Panel de <%= rol %>
+    </title>
+    <link href="/stylesheets/all.min.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" data-purpose="Layout StyleSheet" title="Web Awesome"
+        href="/css/app-wa-4605c815f1874757bc9ac33aa114fb0f.css?vsn=d">
 
-      <link
-        rel="stylesheet"
-        href="https://site-assets.fontawesome.com/releases/v5.15.4/css/all.css"
-      >
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v5.15.4/css/all.css">
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
     <link href="/stylesheets/sb-admin-2.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 </head>
+
 <body id="page-top">
     <div id="wrapper">
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/">
-                <div class="sidebar-brand-text mx-3"><%= rol %></div>
+                <div class="sidebar-brand-text mx-3">
+                    <%= rol %>
+                </div>
             </a>
             <hr class="sidebar-divider my-0">
 
@@ -38,15 +37,14 @@
             <div class="sidebar-heading">
                 Interfaz
             </div>
-            <!-- Nav Item - Charts -->
-            <li class="nav-item">
+            <li class="nav-item active">
                 <a class="nav-link" href="/estadisticas">
                     <i class="fas fa-tachometer-alt-average"></i>
                     <span>Panel</span></a>
             </li>
 
             <!-- Nav Item - Charts -->
-            <li class="nav-item active">
+            <li class="nav-item">
                 <a class="nav-link" href="/admin_panel">
                     <i class="fas fa-user fa-chart-area"></i>
                     <span>Usuarios</span></a>
@@ -110,7 +108,7 @@
                     </button>
 
                     <!-- Topbar Search -->
-                    
+
 
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
@@ -150,7 +148,8 @@
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="/logoutAdmin" data-toggle="modal" data-target="#logoutModal">
+                                <a class="dropdown-item" href="/logoutAdmin" data-toggle="modal"
+                                    data-target="#logoutModal">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Cerrar sesión
                                 </a>
@@ -161,59 +160,43 @@
 
                 </nav>
                 <div class="container-fluid">
-                    <h1 class="h3 mb-2 text-gray-800">Bienvenido/a..</h1>
-                        <a href="/agregar_usuarios" style="padding: .4rem; background-color: rgb(207, 33, 33); color:white; text-decoration:none; border-radius: 3px; ">Agregar Usuarios</a>
-                    <div class="card shadow mb-4 mt-4">
-                        <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Tabla de Usuarios</h6>
+                    <h1 class="h3 mb-2 text-gray-800">Bienvenido/a</h1>
+                    <!-- Añadir un row para alinear las tarjetas en columnas -->
+                    <div class="row mt-4">
+                        <!-- Columna para el gráfico de usuarios -->
+                        <div class="col-md-4">
+                            <div class="card shadow mb-4">
+                                
+                                <div class="card-body">
+                                    <p class="font-weight-bold"><i class="fas fa-user mr-2"></i>Usuarios</p>
+                                    <canvas id="userChart" width="150" height="150"></canvas>
+                                </div>
+                            </div>
                         </div>
-
-
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                    <thead>
-                                        <tr>
-                                            <th>Id</th>
-                                            <th>Nombre</th>
-                                            <th>Apellido</th>
-                                            <th>Teléfono</th>
-                                            <th>Cédula</th>
-                                            <th>Rol</th>        
-                                             <th>Acciones</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                    <% usuario.forEach(user => { %>
-                                        <tr>
-                                            
-                                            <td><%= user.id %></td>
-                                            <td><%= user.nombre %></td>
-                                            <td><%= user.apellido %></td>
-                                            <td><%= user.telefono %></td>
-                                            <td><%= user.cedula %></td>
-                                            <td><%= user.rol %></td>
-                                            
-                                                <td><a class="btn btn-info" href="/editarusuario/<%= user.id %>">
-                                                    <li class="fas fa-pencil">
-                                                    </li>
-                                                </a>        
-                                            <% if (rol !== 'Líder de Calle') { %>  
-                                                <a class="btn btn-danger" href="/usuarios/delete/<%= user.id %>">
-                                                    <li class="fas fa-trash">
-
-                                                    </li>
-                                                </a>
-                                                </td>
-                                            <% } %>
-                                        </tr>
-                                        <% }) %>
-                                    </tbody>
-                                </table>
+                
+                        <!-- Columna para el gráfico de pagos -->
+                        <div class="col-md-4">
+                            <div class="card shadow mb-4">
+                                
+                                <div class="card-body">
+                                    <p class="font-weight-bold"><i class="fas fa-credit-card mr-2"></i>Pagos</p>
+                                    <canvas id="paymentChart" width="150" height="150"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Columna para el gráfico de inventario -->
+                        <div class="col-md-4">
+                            <div class="card shadow mb-4">
+                                
+                                <div class="card-body">
+                                    <p class="font-weight-bold"><i class="fas fa-box mr-2"></i>Inventario</p>
+                                    <canvas id="inventarioChart" width="150" height="150"></canvas>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                
             </div>
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
@@ -237,7 +220,8 @@
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
-                <div class="modal-body">Seleccione "Cerrar sesión" a continuación si está listo para finalizar su sesión actual.</div>
+                <div class="modal-body">Seleccione "Cerrar sesión" a continuación si está listo para finalizar su sesión
+                    actual.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
                     <a class="btn btn-primary" href="/logoutAdmin">Cerrar sesión</a>
@@ -249,9 +233,155 @@
     <script src="/javascripts/bootstrap.bundle.min.js"></script>
     <script src="/javascripts/jquery.easing.min.js"></script>
     <script src="/javascripts/sb-admin-2.min.js"></script>
-    <script src="/javascripts/Chart.min.js"></script>
-    <script src="/javascripts/chart-area-demo.js"></script>
-    <script src="/javascripts/chart-pie-demo.js"></script>
+    <script>
+        // Obtener los datos pasados desde el servidor
+        let usuariosPorRol = <%- JSON.stringify(usuariosPorRol) %>;
+    
+        // Procesar los datos para Chart.js
+        let labels = usuariosPorRol.map(item => {       
+            if (item.rol === 'Administrador') return 'Administrador';
+            if (item.rol === 'Líder de Calle') return 'Líder de Calle';
+            return 'Ciudadano';
+        });
+    
+        let data = usuariosPorRol.map(item => item.cantidad);
+    
+        // Configurar los datos para Chart.js
+        let usuarios = {
+            labels: labels,
+            datasets: [{
+                label: 'Número de Usuarios',
+                data: data, // Los datos dinámicos de la consulta
+                backgroundColor: [
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)'
+                ],
+                borderWidth: 1
+            }]
+        };
+    
+    
+        let pagosPorEstado = <%- JSON.stringify(pagosPorEstado) %>;
+    
+        // Procesar los datos para Chart.js
+        let labelsPagar = ['Sin Pagar', 'Pendiente', 'Aprobado', 'Rechazado'];
+        let dataPagar = [
+            pagosPorEstado.sin_pagar,
+            pagosPorEstado.pendientes,
+            pagosPorEstado.aprobados,
+            pagosPorEstado.rechazados
+        ];
+    
+        // Configurar los datos para Chart.js
+        let pagos = {
+            labels: labelsPagar,
+            datasets: [{
+                label: 'Estado de los Pagos',
+                data: dataPagar,
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(54, 162, 235, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(54, 162, 235, 1)'
+                ],
+                borderWidth: 1
+            }]
+        };
+    
+        // Crear el gráfico de pagos
+        let ctxPayment = document.getElementById('paymentChart').getContext('2d');
+        let paymentChart = new Chart(ctxPayment, {
+            type: 'line', // Puedes cambiar a 'pie', 'line', etc.
+            data: pagos,
+            options: {
+        scales: {
+            y: {
+                beginAtZero: true,
+                ticks: {
+                    // Este callback asegura que solo se muestren números enteros
+                    callback: function(value) {
+                        if (Number.isInteger(value)) {
+                            return value;
+                        }
+                    }
+                }
+            }
+        }
+    }
+        });
+    
+        // Crear el gráfico de usuarios
+        let ctx = document.getElementById('userChart').getContext('2d');
+        let userChart = new Chart(ctx, {
+            type: 'pie',
+            data: usuarios,
+            options: {
+        scales: {
+            y: {
+                beginAtZero: true,
+                ticks: {
+                    // Este callback asegura que solo se muestren números enteros
+                    callback: function(value) {
+                        if (Number.isInteger(value)) {
+                            return value;
+                        }
+                    }
+                }
+            }
+        }
+    }
+        });
+        let inventario = <%- JSON.stringify(inventario) %>;
+
+        let labelsInventario = inventario.map(item => item.tipo);
+        let dataInventario = inventario.map(item => item.cantidad_disponible);
+
+            // Configurar los datos para Chart.js
+        let inventarioData = {
+            labels: labelsInventario,
+            datasets: [{
+                label: 'Cantidad Disponible',
+                data: dataInventario,
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }]
+ 
+        };
+
+            // Crear el gráfico de inventario
+        let ctxInventario = document.getElementById('inventarioChart').getContext('2d');
+        let inventarioChart = new Chart(ctxInventario, {
+        type: 'bar',
+        data: inventarioData,
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    
+                }
+            }
+        }
+    });
+
+
+
+    </script>
+    
+
+
 
 </body>
 
