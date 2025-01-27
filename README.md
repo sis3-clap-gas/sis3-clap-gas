@@ -24,15 +24,15 @@ Debido a restricciones de presupuesto, el proyecto está usando un host gratuito
 
 ##### Administrador
 - **Cédula:** 30456789
-- **Contraseña:** test
+- **Contraseña:** 30456789
 
 ##### Líder de Calle
 - **Cédula:** 11234567
-- **Contraseña:** test
+- **Contraseña:** 11234567
 
 ##### Ciudadano
 - **Cédula:** 30406581
-- **Contraseña:** test
+- **Contraseña:** 30406581
 
 ## Administrador
 [screen-capture (1).webm](https://github.com/user-attachments/assets/9060ab82-f3f5-4d46-8d5f-6434ba74e90c)
