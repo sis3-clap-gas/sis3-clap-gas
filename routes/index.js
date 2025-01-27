@@ -53,7 +53,6 @@ router.get('/', auth.protectRoute, function (req, res, next) {
   })
 });
 
-
 router.get('/agregarfamilias', auth.protectRouteAdmin, (req, res) => {
   const query1 = "SELECT p.persona_id,p.nombre, p.apellido FROM usuarios u INNER JOIN personas p ON u.persona_id = p.persona_id;"
   const query2 = "SELECT p.persona_id, p.nombre, p.apellido, lc.id AS lidercalle_calles_id FROM usuarios u INNER JOIN personas p ON u.persona_id = p.persona_id INNER JOIN lidercalle_calles lc ON u.usuario_id = lc.usuario_id WHERE u.rol = 'Líder de Calle';"
@@ -68,12 +67,46 @@ router.get('/agregarfamilias', auth.protectRouteAdmin, (req, res) => {
   })
 });
 
-
 router.get('/agregarcalles', auth.protectRouteAdmin, (req, res) => {
   res.render('agregar_calles', {
     rol: req.user.rol
   })
 })
+
+
+router.get('/inventario/edit/:id', auth.protectRouteAdmin, (req, res) => {
+  const { id } = req.params;
+  const query = `SELECT * FROM inventario WHERE inventario_id = ?`;
+  connection.query(query, [id], (err, row) => {
+    if (err) {
+      console.error('Error al obtener los datos del inventario:', err);
+      return res.status(500).send('Error al cargar datos del inventario');
+    }
+
+    const producto = row[0];
+    res.render('editar_inventario', {
+      rol: req.user.rol,
+      producto
+    });
+  });
+});
+
+// Ahora hazme el post del editar inventario sin el tipo
+router.post('/edit/inventario/:id', auth.protectRouteAdmin, (req, res) => {
+  const { id } = req.params;
+  const { cantidad_disponible, precio_unitario } = req.body;
+  const query = `UPDATE inventario SET cantidad_disponible = ?, precio_unitario = ? WHERE inventario_id = ?`;
+  connection.query(query, [cantidad_disponible, precio_unitario, id], (err, result) => {
+    if (err) {
+      console.error('Error al actualizar el inventario:', err);
+      return res.status(500).send('Error al editar inventario');
+    }
+    res.redirect('/inventario_panel');
+  });
+});
+
+
+
 
 
 router.get('/calles/edit/:id', auth.protectRouteAdmin, (req, res) => {
@@ -192,8 +225,8 @@ router.post('/editarfamilia/:id', auth.protectRouteAdmin, (req, res) => {
 
 
 router.post('/agregarusuarios', async (req, res) => {
-  const { nombre, apellido, cedula, contraseña, direccion, calle, telefono, fechadenacimiento, rol } = req.body;
-  const hashedPassword = await bcrypt.hash(contraseña, saltRounds);
+  const { nombre, apellido, cedula, direccion, calle, telefono, fechadenacimiento, rol } = req.body;
+  const hashedPassword = await bcrypt.hash(cedula, saltRounds);
   const checkCedulaQuery = "SELECT * FROM usuarios WHERE cédula = ?";
   connection.query(checkCedulaQuery, [cedula], async (err, results) => {
     if (err) {
@@ -298,8 +331,6 @@ router.get('/clap/:id', auth.protectRoute, (req, res) => {
     });
   });
 });
-
-
 
 
 router.get('/gas/:id', auth.protectRoute, (req, res) => {
@@ -424,40 +455,64 @@ router.get('/admin_panel', auth.protectRouteAdmin, (req, res) => {
 });
 
 
-router.get('/estadisticas', auth.protectRouteAdmin, (req, res) => {
+router.get('/estadisticas', auth.protectRouteAdmin, async (req, res) => {
+  const fetchUrl = await fetch("https://pydolarve.org/api/v1/dollar?page=bcv&monitor=usd");
+  const data = await fetchUrl.json();
+  const price = data.price;
+
+
   const query = `SELECT u.rol, COUNT(*) AS cantidad
                  FROM usuarios u
                  GROUP BY u.rol`;
 
   const queryPayment = `
-                 SELECT 
-                   SUM(CASE WHEN e.estado = 'Pendiente' THEN 1 ELSE 0 END) AS pendientes,
-                   SUM(CASE WHEN e.estado = 'Aprobado' THEN 1 ELSE 0 END) AS aprobados,
-                   SUM(CASE WHEN e.estado = 'Rechazado' THEN 1 ELSE 0 END) AS rechazados,
-                   (SELECT COUNT(*) FROM usuarios u LEFT JOIN entregas e ON u.persona_id = e.persona_id WHERE e.entrega_id IS NULL) AS sin_pagar
-                 FROM 
-                   entregas e
-               `;
-
+    SELECT 
+      SUM(CASE WHEN e.estado = 'Pendiente' THEN 1 ELSE 0 END) AS pendientes,
+      SUM(CASE WHEN e.estado = 'Aprobado' THEN 1 ELSE 0 END) AS aprobados,
+      SUM(CASE WHEN e.estado = 'Rechazado' THEN 1 ELSE 0 END) AS rechazados,
+      (SELECT COUNT(*) FROM usuarios u LEFT JOIN entregas e ON u.persona_id = e.persona_id WHERE e.entrega_id IS NULL) AS sin_pagar
+    FROM 
+      entregas e
+  `;
 
   const queryInventario = `SELECT tipo, cantidad_disponible FROM inventario`;
+
+  const queryPagoTotal = `
+    SELECT SUM(p.precio_total) AS totalPagos
+    FROM pagos p
+    INNER JOIN entregas e ON p.entrega_id = e.entrega_id
+    WHERE e.estado = 'Aprobado'
+  `;
+
   const rol = req.user.rol;
+
   connection.query(query, (err, rows) => {
     if (err) {
       return res.status(500).send('Error al realizar la consulta');
     }
-    connection.query(queryInventario,(err,rowInventario) =>  {
-      connection.query(queryPayment,(err,rowPayment) => {
-        res.render('estadisticas', {
-          rol,
-          usuariosPorRol: rows,
-          pagosPorEstado: rowPayment[0],
-          inventario: rowInventario
+
+    connection.query(queryInventario, (err, rowInventario) => {
+      connection.query(queryPayment, (err, rowPayment) => {
+        connection.query(queryPagoTotal, (err, rowPagoTotal) => {
+          if (err) {
+            return res.status(500).send('Error al realizar la consulta de pagos');
+          }
+          const bcv = rowPagoTotal[0].totalPagos / price;
+          res.render('estadisticas', {
+            rol,
+            usuariosPorRol: rows,
+            pagosPorEstado: rowPayment[0],
+            inventario: rowInventario,
+            tasa: price,
+            bcv: bcv.toFixed(2),
+            totalPagosAprobados: rowPagoTotal[0]?.totalPagos || 0 // Asegurándonos de que no haya errores si no hay resultados
+          });
         });
-      })
-    })
+      });
+    });
   });
 });
+
 
 
 
@@ -593,7 +648,7 @@ router.get('/rechazar/:id', (req, res) => {
   const rechazado = 'Rechazado';
   const query = "UPDATE entregas SET estado = ? WHERE entrega_id = ?";
   connection.query(query, [rechazado, id], (err, row) => {
-    return res.status(200).json({ message: 'Pago aprobado' });
+    return res.status(200).json({ message: 'Pago rechazado' });
   })
 })
 
@@ -664,16 +719,17 @@ router.get('/editarusuario/:id', auth.protectRouteAdmin, (req, res) => {
 router.post('/editarusuario/:id', async (req, res) => {
   const { id } = req.params;
   const { nombre, apellido, cedula, direccion, calle, telefono, fechadenacimiento, rol } = req.body;
+  const hashedPassword = await bcrypt.hash(cedula, saltRounds);
   const casa = direccion.trim();
   const query1 = `UPDATE personas SET nombre = ?, apellido = ?, telefono = ?, direccion = ?, calle_id = ? WHERE persona_id = (SELECT persona_id FROM usuarios WHERE usuario_id = ?)`;
-  const query2 = `UPDATE usuarios SET cédula = ?, fecha_nacimiento = ?, rol = ? WHERE usuario_id = ?`;
+  const query2 = `UPDATE usuarios SET cédula = ?, contraseña = ?, fecha_nacimiento = ?, rol = ? WHERE usuario_id = ?`;
   connection.query(query1, [nombre, apellido, telefono, casa, calle, id], (err) => {
     if (err) {
       console.error('Error al actualizar datos de persona:', err);
       return res.status(500).send('Error al editar usuario');
     }
 
-    connection.query(query2, [cedula, fechadenacimiento, rol, id], (err) => {
+    connection.query(query2, [cedula, hashedPassword, fechadenacimiento, rol, id], (err) => {
       if (err) {
         console.error('Error al actualizar datos de usuario:', err);
         return res.status(500).send('Error al editar usuario');

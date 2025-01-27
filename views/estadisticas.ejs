@@ -20,6 +20,8 @@
         rel="stylesheet">
     <link href="/stylesheets/sb-admin-2.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+
 
 </head>
 
@@ -162,8 +164,28 @@
                 <div class="container-fluid">
                     <h1 class="h3 mb-2 text-gray-800">Bienvenido/a</h1>
                     <!-- Añadir un row para alinear las tarjetas en columnas -->
+                    <div class="card" style="width: 18rem; border-left: 6px solid rgb(199, 55, 55);">
+                        <div class="card-body" style="display: flex; flex-direction: column;">
+                            <div class="title" style="display: flex; align-items: center;  font-size: 1.3rem; gap: 5px;">
+                                <i class="fas fa-dollar-sign"></i>
+                                <span>Ganancias totales</span>
+                            </div>
+                            <div class="value" style="display: flex; flex-direction: column;">
+                                <div class="content" style="font-size: 1.2rem; margin-top: 10px; display: flex; justify-content: center; align-items: center; margin-right: .8rem;">
+                                <img src="https://seeklogo.com/images/B/BCV_Banco_Central_de_Venezuela-logo-DA7C041FA1-seeklogo.com.png" alt="bcv" width="40px" height="40px" style="width: max-content;"> 
+                                <span>BCV</span>
+                                </div>
+                                <div class="content-bcv" style="margin-top: .5rem;">
+                                    <span>Tasa: <%= tasa %></span><br>
+                                    <span>Bolivares: <%= totalPagosAprobados %> BsS</span><br>
+                                    <span>Bolivares/USD: <%= bcv %> $</span>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
                     <div class="row mt-4">
-                        <!-- Columna para el gráfico de usuarios -->
+                        
                         <div class="col-md-4">
                             <div class="card shadow mb-4">
                                 
@@ -285,16 +307,16 @@
                 label: 'Estado de los Pagos',
                 data: dataPagar,
                 backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
                     'rgba(255, 206, 86, 0.2)',
                     'rgba(75, 192, 192, 0.2)',
-                    'rgba(54, 162, 235, 0.2)'
+                    'rgba(255, 99, 132, 0.2)',
                 ],
                 borderColor: [
-                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
                     'rgba(255, 206, 86, 1)',
                     'rgba(75, 192, 192, 1)',
-                    'rgba(54, 162, 235, 1)'
+                    'rgba(255, 99, 132, 1)'
                 ],
                 borderWidth: 1
             }]
@@ -303,7 +325,7 @@
         // Crear el gráfico de pagos
         let ctxPayment = document.getElementById('paymentChart').getContext('2d');
         let paymentChart = new Chart(ctxPayment, {
-            type: 'line', // Puedes cambiar a 'pie', 'line', etc.
+            type: 'bar', // Puedes cambiar a 'pie', 'line', etc.
             data: pagos,
             options: {
         scales: {
@@ -322,27 +344,25 @@
     }
         });
     
-        // Crear el gráfico de usuarios
-        let ctx = document.getElementById('userChart').getContext('2d');
-        let userChart = new Chart(ctx, {
-            type: 'pie',
-            data: usuarios,
-            options: {
-        scales: {
-            y: {
-                beginAtZero: true,
-                ticks: {
-                    // Este callback asegura que solo se muestren números enteros
-                    callback: function(value) {
-                        if (Number.isInteger(value)) {
-                            return value;
-                        }
-                    }
-                }
+        // Crear el gráfico
+let ctx = document.getElementById('userChart').getContext('2d');
+new Chart(ctx, {
+    type: 'pie',
+    data: usuarios,
+    options: {
+        plugins: {
+            datalabels: {
+                color: '#000',
+                font: {
+                    weight: 'normal',
+                    size: 14 
+                },
+                formatter: (value) => value 
             }
         }
-    }
-        });
+    },
+    plugins: [ChartDataLabels] 
+});
         let inventario = <%- JSON.stringify(inventario) %>;
 
         let labelsInventario = inventario.map(item => item.tipo);
@@ -364,7 +384,7 @@
             // Crear el gráfico de inventario
         let ctxInventario = document.getElementById('inventarioChart').getContext('2d');
         let inventarioChart = new Chart(ctxInventario, {
-        type: 'bar',
+        type: 'line',
         data: inventarioData,
         options: {
             scales: {
@@ -375,9 +395,6 @@
             }
         }
     });
-
-
-
     </script>
     
 

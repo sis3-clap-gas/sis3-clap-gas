@@ -580,7 +580,7 @@ main {
 
 
 .notificaciones {
-  width: 200px;
+  width: 80px !important;
   position: fixed;
   left: 20px;
   top: 30px;
@@ -588,6 +588,7 @@ main {
 }
 
 .notificaciones div {
+  width: max-content;
   display: none;
   position: fixed;
   left: 28px;
