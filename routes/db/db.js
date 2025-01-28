@@ -22,17 +22,6 @@ function handleError(error) {
   }
 }
 
-setInterval(async () => {
-  try {
-    await connection.promise().query('SELECT 1');
-    console.log('Conexión a la base de datos está activa');
-  } catch (error) {
-    console.error('Error al verificar la conexión:', error);
-    createConnection(); 
-  }
-}, 30000);  
-
-
 createConnection();
 connection.on('error', handleError);
 
