@@ -8,75 +8,60 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>Panel de <%= rol %>
-    </title>
-    <link href="/stylesheets/all.min.css" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" data-purpose="Layout StyleSheet" title="Web Awesome"
-        href="/css/app-wa-4605c815f1874757bc9ac33aa114fb0f.css?vsn=d">
 
-    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v5.15.4/css/all.css">
+    <title>Panel de <%= rol %></title>
+
+    <!-- Custom fonts for this template-->
+
+
+
+    <link href="/stylesheets/all.min.css" rel="stylesheet" type="text/css"> 
+    <link
+      rel="stylesheet"
+      data-purpose="Layout StyleSheet"
+      title="Web Awesome"
+      href="/css/app-wa-4605c815f1874757bc9ac33aa114fb0f.css?vsn=d"
+    >
+
+      <link
+        rel="stylesheet"
+        href="https://site-assets.fontawesome.com/releases/v5.15.4/css/all.css"
+      >
+
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
+
+    <!-- Custom styles for this template-->
     <link href="/stylesheets/sb-admin-2.min.css" rel="stylesheet">
-
-
-    <style>
-        .separation {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-        }
-
-        .separation label {
-            margin-top: .4rem;
-            color: rgb(22, 22, 22);
-            font-weight: bold;
-        }
-
-        .separation button {
-            border: 0;
-            background-color: brown;
-            padding: .3rem 1rem;
-            color: white;
-            border-radius: 3px;
-        }
-
-        
-        .separation input, .separation select {
-            border: 1px solid brown;
-            border-radius: 3px;
-        }  
-
-        .separation input:focus {
-            border: 1px solid brown;
-            border-radius: 3px;
-            outline: 0;
-        }
-
-        
-
-
-
-    </style>
 
 </head>
 
 <body id="page-top">
+
+    <!-- Page Wrapper -->
     <div id="wrapper">
+
+        <!-- Sidebar -->
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/admin_panel">
-                <div class="sidebar-brand-text mx-3">
-                    <%= rol %>
-                </div>
+
+            <!-- Sidebar - Brand -->
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+                
+                <div class="sidebar-brand-text mx-3"><%= rol %></div>
             </a>
+
+            <!-- Divider -->
             <hr class="sidebar-divider my-0">
 
+         
+            <!-- Divider -->
             <hr class="sidebar-divider">
+
+            <!-- Heading -->
             <div class="sidebar-heading">
                 Interfaz
             </div>
-
             <!-- Nav Item - Charts -->
             <li class="nav-item">
                 <a class="nav-link" href="/estadisticas">
@@ -95,19 +80,18 @@
                     <i class="fas fa-road"></i>
                     <span>Calles y Familias</span></a>
             </li>
-            <li class="nav-item active">
+            <li class="nav-item">
                 <a class="nav-link" href="/inventario_panel">
                     <i class="fas fa-box"></i>
                     <span>Inventario</span></a>
             </li>
-
 
             <li class="nav-item">
                 <a class="nav-link" href="/pagos_panel">
                     <i class="fas fa-credit-card"></i>
                     <span>Pagos</span></a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item active">
                 <a class="nav-link" href="/ayuda">
                     <i class="fa fa-question-circle"></i>
                     <span>Ayuda</span></a>
@@ -153,7 +137,7 @@
                     </button>
 
                     <!-- Topbar Search -->
-
+                    
 
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
@@ -181,11 +165,18 @@
                                 </form>
                             </div>
                         </li>
+
+                     
+
+                        
+
                         <div class="topbar-divider d-none d-sm-block"></div>
+
+                        <!-- Nav Item - User Information -->
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small"></span>
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">...</span>
                                 <img class="img-profile rounded-circle"
                                     src="https://i.pinimg.com/736x/8b/16/7a/8b167af653c2399dd93b952a48740620.jpg">
                             </a>
@@ -193,8 +184,7 @@
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="/logoutAdmin" data-toggle="modal"
-                                    data-target="#logoutModal">
+                                <a class="dropdown-item" href="/logoutAdmin" data-toggle="modal" data-target="#logoutModal">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Cerrar sesión
                                 </a>
@@ -204,26 +194,54 @@
                     </ul>
 
                 </nav>
-                
-
-                <div class="container-fluid"
-                style="display: flex; justify-content: center; align-items: center; flex-direction: column; gap: 20px;">
-                <h2 style="color: black;">Editar Inventario</h2>
-                <form action="/edit/inventario/<%= producto.inventario_id %>" method="POST"
-                  style="padding: 1rem; background-color: white; border-radius: 5px; display: flex; flex-direction: column; gap: 7px;">
-                  <div class="separation">
-                    <label for="lider">Tipo</label>
-                    <input type="text" value="<%= producto.tipo%>" readonly>
-                    <label for="lider">Cantidad</label>
-                    <input type="number" name="cantidad_disponible" value="<%= producto.cantidad_disponible%>">
-                    <label for="lider">Precio</label>
-                    <input type="number" name="precio_unitario" value="<%= producto.precio_unitario%>">
-                    <button>Enviar</button>
+                <div class="container-fluid">
+                    <h1 class="h3 mb-2 text-gray-800">Bienvenido/a...</h1>
+                    <p class="mb-4">
+                      En esta sección podrás descargar el manual de usuario correspondiente a tu rol. Este manual contiene toda la información necesaria para navegar y utilizar correctamente el sistema.
+                    </p>
+                  
+                    <div class="card shadow mb-4">
+                      <div class="card-header py-3 d-flex align-items-center">
+                        <i class="fas fa-book text-primary fa-2x mr-2"></i>
+                        <h6 class="m-0 font-weight-bold text-primary">Manual de Usuario</h6>
+                      </div>
+                      <div class="card-body">
+                        <% if (rol === 'Administrador') { %>
+                          <div class="d-flex align-items-center mb-3">
+                            <i class="fas fa-user-shield text-success fa-2x mr-3"></i>
+                            <div>
+                              <h5 class="font-weight-bold">Manual para Administradores</h5>
+                              <p>Incluye instrucciones detalladas sobre la gestión de usuarios, configuraciones avanzadas, y administración general del sistema.</p>
+                              <a href="/manuales/manual_usuario_admin.pdf" class="btn btn-success" download>
+                                <i class="fas fa-download mr-2"></i> Descargar Manual
+                              </a>
+                            </div>
+                          </div>
+                        <% } else if (rol === 'Líder de Calle') { %>
+                          <div class="d-flex align-items-center mb-3">
+                            <i class="fas fa-users text-info fa-2x mr-3"></i>
+                            <div>
+                              <h5 class="font-weight-bold">Manual para Líderes de Calle</h5>
+                              <p>Proporciona información sobre cómo registrar entregas, gestionar familias, y realizar tareas específicas de líderes de calle.</p>
+                              <a href="/manuales/manual_usuario_lider.pdf" class="btn btn-info" download>
+                                <i class="fas fa-download mr-2"></i> Descargar Manual
+                              </a>
+                            </div>
+                          </div>
+                        <% } else { %>
+                          <div class="text-danger">
+                            <i class="fas fa-exclamation-circle fa-2x mr-2"></i>
+                            <span>No tiene un manual asignado. Por favor, contacte con el administrador.</span>
+                          </div>
+                        <% } %>
+                      </div>
+                    </div>
                   </div>
-                </form>
-              </div>
-
+                  
+                  
             </div>
+
+            <!-- Footer -->
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
@@ -231,11 +249,20 @@
                     </div>
                 </div>
             </footer>
+            <!-- End of Footer -->
+
         </div>
+        <!-- End of Content Wrapper -->
+
     </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Scroll to Top Button-->
     <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
     </a>
+
+    <!-- Logout Modal-->
     <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -246,8 +273,7 @@
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
-                <div class="modal-body">Seleccione "Cerrar sesión" a continuación si está listo para finalizar su sesión
-                    actual.</div>
+                <div class="modal-body">Seleccione "Cerrar sesión" a continuación si está listo para finalizar su sesión actual.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
                     <a class="btn btn-primary" href="/logoutAdmin">Cerrar sesión</a>

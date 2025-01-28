@@ -763,7 +763,11 @@ router.post('/editarusuario/:id', async (req, res) => {
 
 
 
-
+router.get('/ayuda', auth.protectRouteAdmin,(req, res) => {
+  res.render('ayuda', {
+    rol: req.user.rol
+  })
+})
 
 
 
