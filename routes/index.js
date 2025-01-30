@@ -456,9 +456,9 @@ router.get('/admin_panel', auth.protectRouteAdmin, (req, res) => {
 
 
 router.get('/estadisticas', auth.protectRouteAdmin, async (req, res) => {
-  const fetchUrl = await fetch("https://pydolarve.org/api/v1/dollar?page=bcv&monitor=usd");
+  const fetchUrl = await fetch("https://ve.dolarapi.com/v1/dolares");
   const data = await fetchUrl.json();
-  const price = data.price;
+  const price = data[0].promedio;
 
 
   const query = `SELECT u.rol, COUNT(*) AS cantidad
