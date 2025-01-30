@@ -230,10 +230,14 @@
                                                         <a href="" class="btn btn-danger" style="pointer-events: none;"><%= user.estado %></a>
                                                     <% } %>
                                                 </td>
-                                                <td style="text-align: center;margin-top: 1rem;padding-top: 20px;">
-                                                    <a style="cursor: pointer; padding: .5rem .6rem; color: white; background-color: rgb(226, 43, 43); border-radius: .4rem;" data-toggle="modal" data-target="#mostrar<%= user.pago_id %>">
-                                                    <li class="fas fa-eye"></li> Mostrar
-                                                    </a>
+                                                <td style="text-align: center;margin-top: 1rem;">
+                                                    <div class="position-view" style="display: flex; gap: 2px;">
+                                                        <a style="display: flex; gap: 5px; align-items: center; cursor: pointer; padding: .5rem .6rem; color: white; background-color: rgb(226, 43, 43); border-radius: .4rem;"
+                                                            data-toggle="modal"
+                                                            data-target="#mostrar<%= user.pago_id %>">
+                                                        <li class="fas fa-eye"></li> Mostrar
+                                                        </a>
+                                                    </div>
                                                 </td>
                                             </tr>
                                             <% }) %>
